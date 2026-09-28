@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DataForge — CSV & Excel Analytics</title>
+  <meta name="description" content="A browser-based CSV and Excel analytics dashboard. Your data stays in your browser.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">D</span><div><b>DataForge</b><small>CSV & Excel Analytics</small></div></div>
+    <div class="top-actions">
+      <button id="demoBtn" class="ghost">Load Demo</button>
+      <button id="clearBtn" class="ghost">Clear</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="uploadView" class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">100% browser-based</span>
+        <h1>Turn raw spreadsheets into an interactive dashboard.</h1>
+        <p>Upload CSV or XLSX files. Data is processed locally in your browser — no account or backend required.</p>
+      </div>
+      <label id="dropzone" class="dropzone">
+        <input id="fileInput" type="file" accept=".csv,.xlsx,.xls,.tsv">
+        <div class="upload-icon">↥</div>
+        <strong>Drop CSV / Excel here</strong>
+        <span>or tap to choose a file</span>
+        <small>Supports .csv, .tsv, .xlsx and .xls</small>
+      </label>
+      <div class="feature-row">
+        <span>✓ Automatic column detection</span><span>✓ Interactive charts</span><span>✓ Search & filters</span><span>✓ Export CSV / PNG</span>
+      </div>
+    </section>
+
+    <section id="appView" class="hidden">
+      <div class="filebar">
+        <div><b id="fileName">Dataset</b><span id="datasetMeta"></span></div>
+        <div class="file-actions">
+          <button id="exportCsv" class="secondary">Export CSV</button>
+          <button id="exportJson" class="secondary">Export JSON</button>
+          <button id="newFile" class="primary">New file</button>
+        </div>
+      </div>
+
+      <div id="notice" class="notice hidden"></div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div><h2>Visual Explorer</h2><p>Choose fields and DataForge will build the chart.</p></div>
+          <div class="chart-actions"><button id="downloadChart" class="secondary">Download PNG</button></div>
+        </div>
+        <div class="controls chart-controls">
+          <label>Chart <select id="chartType">
+            <option value="bar">Bar</option><option value="line">Line</option><option value="doughnut">Doughnut</option>
+            <option value="pie">Pie</option><option value="scatter">Scatter</option>
+          </select></label>
+          <label>Category / X <select id="xField"></select></label>
+          <label>Metric / Y <select id="yField"></select></label>
+          <label>Limit <select id="rowLimit"><option>10</option><option>20</option><option>50</option><option>100</option></select></label>
+        </div>
+        <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+      </section>
+
+      <div class="grid2">
+        <section class="panel">
+          <div class="panel-head"><div><h2>Column Profile</h2><p>Detected type, missing values and unique values.</p></div></div>
+          <div class="table-scroll"><table id="profileTable"></table></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><h2>Quick Insights</h2><p>Calculated directly from the loaded dataset.</p></div></div>
+          <div id="insights" class="insights"></div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div><h2>Data Table</h2><p id="tableMeta"></p></div>
+          <div class="searchbox"><input id="searchInput" placeholder="Search all columns…"></div>
+        </div>
+        <div class="table-scroll data-scroll"><table id="dataTable"></table></div>
+        <div class="pager"><button id="prevPage" class="secondary">← Previous</button><span id="pageInfo"></span><button id="nextPage" class="secondary">Next →</button></div>
+      </section>
+    </section>
+  </main>
+
+  <footer>DataForge • Static GitHub Pages app • Data stays in your browser</footer>
+  <script src="app.js"></script>
+</body>
+</html>
